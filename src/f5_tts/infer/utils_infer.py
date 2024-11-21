@@ -3,12 +3,8 @@
 import os
 import sys
 
-<<<<<<< HEAD
-sys.path.append(f"../../{os.path.dirname(os.path.abspath(__file__))}/third_party")
-=======
 os.environ["PYTOCH_ENABLE_MPS_FALLBACK"] = "1"  # for MPS device compatibility
 sys.path.append(f"../../{os.path.dirname(os.path.abspath(__file__))}/third_party/BigVGAN/")
->>>>>>> main
 
 import hashlib
 import re
