@@ -10,14 +10,6 @@ from torch.nn.utils.rnn import pad_sequence
 
 import jieba
 from pypinyin import lazy_pinyin, Style
-from tn.chinese.normalizer import Normalizer as ZhNormalizer
-from tn.english.normalizer import Normalizer as EnNormalizer
-import re
-chinese_char_pattern = re.compile(r'[\u4e00-\u9fff]+')
-
-def contains_chinese(text):
-    return bool(chinese_char_pattern.search(text))
-
 
 # seed everything
 
@@ -152,11 +144,6 @@ def convert_char_to_pinyin(text_list, polyphone=True):
         char_list = []
         text = text.translate(god_knows_why_en_testset_contains_zh_quote)
         text = text.translate(custom_trans)
-
-        if contains_chinese(text):
-            text = ZhNormalizer().normalize(text)
-        else:
-            text = EnNormalizer().normalize(text)
 
         for seg in jieba.cut(text):
             seg_byte_len = len(bytes(seg, "UTF-8"))

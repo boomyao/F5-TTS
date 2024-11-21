@@ -31,6 +31,13 @@ from f5_tts.model.utils import (
     convert_char_to_pinyin,
 )
 
+from tn.chinese.normalizer import Normalizer as ZhNormalizer
+from tn.english.normalizer import Normalizer as EnNormalizer
+import re
+
+def contains_chinese(text):
+    return bool(re.compile(r'[\u4e00-\u9fff]+').search(text))
+
 _ref_audio_cache = {}
 
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
@@ -431,6 +438,11 @@ def infer_batch_process(
         ref_text = ref_text + " "
     for i, gen_text in enumerate(progress.tqdm(gen_text_batches)):
         # Prepare the text
+        if contains_chinese(gen_text):
+            gen_text = ZhNormalizer().normalize(gen_text)
+        else:
+            gen_text = EnNormalizer().normalize(gen_text)
+
         text_list = [ref_text + gen_text]
         final_text_list = convert_char_to_pinyin(text_list)
 
