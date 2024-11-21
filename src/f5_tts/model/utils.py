@@ -151,7 +151,7 @@ def convert_char_to_pinyin(text_list, polyphone=True):
                     char_list.append(" ")
                 char_list.extend(seg)
             elif polyphone and seg_byte_len == 3 * len(seg):  # if pure chinese characters
-                seg = lazy_pinyin(seg, style=Style.TONE3, tone_sandhi=True)
+                seg = lazy_pinyin(seg, style=Style.TONE3)
                 for c in seg:
                     if c not in "。，、；：？！《》【】—…":
                         char_list.append(" ")

@@ -1,61 +1,68 @@
 [build-system]
-requires = ["setuptools >= 61.0", "setuptools-scm>=8.0"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "f5-tts"
 version = "0.1.0"
 description = "F5-TTS: A Fairytaler that Fakes Fluent and Faithful Speech with Flow Matching"
 readme = "README.md"
-license = {text = "MIT License"}
+license = "MIT"
+authors = []
+homepage = "https://github.com/SWivid/F5-TTS"
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
 ]
-dependencies = [
-    "accelerate>=0.33.0",
-    "bitsandbytes>0.37.0",
-    "cached_path",
-    "click",
-    "datasets",
-    "ema_pytorch>=0.5.2",
-    "gradio>=3.45.2",
-    "jieba",
-    "librosa",
-    "matplotlib",
-    "numpy<=1.26.4",
-    "pydub",
-    "pypinyin",
-    "safetensors",
-    "soundfile",
-    "tomli",
-    "torch>=2.0.0",
-    "torchaudio>=2.0.0",
-    "torchdiffeq",
-    "tqdm>=4.65.0",
-    "transformers",
-    "transformers_stream_generator",
-    "vocos",
-    "wandb",
-    "x_transformers>=1.31.14",
-]
 
-[project.optional-dependencies]
-eval = [
-    "faster_whisper==0.10.1",
-    "funasr",
-    "jiwer",
-    "modelscope",
-    "zhconv",
-    "zhon",
-]
+[[tool.poetry.source]]
+name = "aliyun"
+priority = "primary"
+url = "https://mirrors.aliyun.com/pypi/simple"
 
-[project.urls]
-Homepage = "https://github.com/SWivid/F5-TTS"
+[tool.poetry.dependencies]
+python = ">=3.10"
+accelerate = "^1.1.1"
+bitsandbytes = ">0.37.0"
+cached-path = "*"
+click = "*"
+datasets = "*"
+ema-pytorch = ">=0.5.2"
+gradio = ">=3.45.2"
+jieba = "*"
+librosa = "*"
+matplotlib = "*"
+numpy = "<=1.26.4"
+pydub = "*"
+pypinyin = "*"
+safetensors = "*"
+soundfile = "*"
+tomli = "*"
+torch = ">=2.0.0"
+torchaudio = ">=2.0.0"
+torchdiffeq = "*"
+tqdm = ">=4.65.0"
+transformers = "*"
+transformers-stream-generator = "*"
+vocos = "*"
+wandb = "*"
+x-transformers = ">=1.31.14"
+fastapi = "*"
+uvicorn = "*"
+minio = "*"
+botocore = "1.35.57"
+urllib3 = ">=1.25.4,<1.27"
+omegaconf = "*"
+deepspeed = "^0.15.4"
+tabulate = "^0.9.0"
+resemble-enhance = {path = "src/third_party/resemble-enhance"}
+bigvgan = {path = "src/third_party/BigVGAN"}
 
-[project.scripts]
-"f5-tts_infer-cli" = "f5_tts.infer.infer_cli:main"
-"f5-tts_infer-gradio" = "f5_tts.infer.infer_gradio:main"
-"f5-tts_finetune-cli" = "f5_tts.train.finetune_cli:main"
-"f5-tts_finetune-gradio" = "f5_tts.train.finetune_gradio:main"
+
+[tool.poetry.scripts]
+f5-tts_infer-cli = "f5_tts.infer.infer_cli:main"
+f5-tts_infer-gradio = "f5_tts.infer.infer_gradio:main"
+f5-tts_serve = "f5_tts.serve:main"
+f5-tts_finetune-cli = "f5_tts.train.finetune_cli:main"
+f5-tts_finetune-gradio = "f5_tts.train.finetune_gradio:main"

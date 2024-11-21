@@ -15,10 +15,17 @@ RUN set -x \
 
 WORKDIR /workspace
 
-RUN git clone https://github.com/SWivid/F5-TTS.git \
-    && cd F5-TTS \
-    && pip install -e .[eval]
+RUN pip install --no-cache-dir poetry
 
-ENV SHELL=/bin/bash
+COPY src/third_party /workspace/src/third_party
 
-WORKDIR /workspace/F5-TTS
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false && poetry install --no-root
+
+COPY . .
+
+RUN pip install .
+
+EXPOSE 6200
+
+CMD ["f5-tts_serve"]

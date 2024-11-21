@@ -3,7 +3,7 @@
 import os
 import sys
 
-sys.path.append(f"../../{os.path.dirname(os.path.abspath(__file__))}/third_party/BigVGAN/")
+sys.path.append(f"../../{os.path.dirname(os.path.abspath(__file__))}/third_party")
 
 import hashlib
 import re
@@ -100,14 +100,15 @@ def load_vocoder(vocoder_name="vocos", is_local=False, local_path="", device=dev
             vocoder = Vocos.from_pretrained("charactr/vocos-mel-24khz").to(device)
     elif vocoder_name == "bigvgan":
         try:
-            from third_party.BigVGAN import bigvgan
-        except ImportError:
+            from bigvgan import BigVGAN
+        except ImportError as e:
             print("You need to follow the README to init submodule and change the BigVGAN source code.")
+            raise e
         if is_local:
             """download from https://huggingface.co/nvidia/bigvgan_v2_24khz_100band_256x/tree/main"""
-            vocoder = bigvgan.BigVGAN.from_pretrained(local_path, use_cuda_kernel=False)
+            vocoder = BigVGAN.from_pretrained(local_path, use_cuda_kernel=False)
         else:
-            vocoder = bigvgan.BigVGAN.from_pretrained("nvidia/bigvgan_v2_24khz_100band_256x", use_cuda_kernel=False)
+            vocoder = BigVGAN.from_pretrained("nvidia/bigvgan_v2_24khz_100band_256x", use_cuda_kernel=False)
 
         vocoder.remove_weight_norm()
         vocoder = vocoder.eval().to(device)
